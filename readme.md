@@ -1,4 +1,4 @@
-# Ion.Calendar
+# Ion.Calendar 1.0
 Удобный легкий календарь <a href="http://ionden.com/a/plugins/ion.calendar/">Страница проекта</a>
 
 ***
