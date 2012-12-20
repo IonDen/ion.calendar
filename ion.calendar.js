@@ -1,11 +1,9 @@
-﻿// Ion Calendar
+﻿// Ion.Calendar
 // version 1.0.45
 // © 2013 Denis Ineshin | IonDen.com
 //
-// Website:
-// http://ionden.com/a/plugins/ion.calendar/
-// GitHub:
-// https://github.com/IonDen/ion.calendar
+// Project page:    http://ionden.com/a/plugins/ion.calendar/
+// GitHub page:     https://github.com/IonDen/ion.calendar
 //
 // Released under MIT licence:
 // http://ionden.com/a/licence.html
