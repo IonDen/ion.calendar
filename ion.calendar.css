@@ -1,0 +1,113 @@
+/* Ion Calendar
+// version 1.0.1
+// by Denis Ineshin | ionden.com
+// ===================================================================================================================*/
+
+/* =====================================================================================================================
+// Calendar */
+
+.ion_calendar {
+    position: relative;
+    background: #fff;
+}
+    .ion_calendar_head {
+        position: relative;
+        height: 37px;
+        overflow: hidden;
+        background: #505050;
+    }
+        .ion_arr {
+            position: absolute;
+            top: 0; text-align: center;
+            cursor: pointer;
+
+            width: 36px;
+            padding: 9px 0 10px;
+        }
+            .ion_arr_prev {
+                left: 0;
+                border-right: 1px solid #444;
+            }
+            .ion_arr_next {
+                right: 0;
+                border-left: 1px solid #444;
+            }
+        .ion_calendar_top_date {
+            position: relative;
+            text-align: center;
+            cursor: pointer;
+
+            padding: 9px 0 0;
+        }
+            .ion_calendar_top_date:first-letter {
+                text-transform: uppercase;
+            }
+        .ion_set_year {
+            position: absolute; display: none;
+            top: 5px; left: 50%;
+            border: 1px solid #333;
+            background: #fff;
+            font-size: 16px;
+            text-align: center;
+            width: 140px;
+            margin-left: -70px;
+            text-align: center;
+            padding: 3px 0;
+        }
+        .ion_set_year:focus {
+            outline: 0;
+        }
+
+    .ion_table_week {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+        .ion_table_week td {
+            width: 14%;
+            vertical-align: top;
+            text-align: center;
+            padding: 12px 0 11px;
+            cursor: default;
+
+            border: 1px solid #ebebeb;
+            color: #b5b5b5;
+            text-shadow: none;
+            font-size: 9px; line-height: 1.333;
+            text-transform: uppercase;
+        }
+
+    .ion_table_days {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin-top: -1px;
+    }
+        .ion_table_days td {
+            width: 14%;
+            vertical-align: top;
+            text-align: center;
+            padding: 12px 0 11px;
+            cursor: default;
+
+            border: 1px solid #ebebeb;
+            color: #757575;
+            text-shadow: none;
+            font-size: 9px; line-height: 1.333;
+            text-transform: uppercase;
+        }
+        .ion_table_days .ion_no_day {
+            background: #f7f7f7;
+        }
+        .ion_table_days .ion_current_day {
+            background: #ebebeb;
+            color: #111;
+        }
+
+    .ion_datepicker .ion_day {
+        cursor: pointer;
+    }
+    .ion_datepicker .ion_day:hover {
+        color: #c33;
+        background: #f6f6f6;
+    }
