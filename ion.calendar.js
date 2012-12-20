@@ -5,7 +5,7 @@
 // Website:
 // http://ionden.com/a/plugins/ion.calendar/
 // GitHub:
-// ..
+// https://github.com/IonDen/ion.calendar
 //
 // Released under MIT licence:
 // http://ionden.com/a/licence.html
