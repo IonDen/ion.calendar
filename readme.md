@@ -21,7 +21,21 @@ ion.calendar — красивый, удобный и легко настраив
 * moment.ru.js
 * ion.calendar.js
 
+И CSS:
+* ion.calendar.css
+
 Инициализируем календарь:
-<pre><code>
-$("#calendar_container").ionCalendar();
+<pre><code>$("#calendar_container").ionCalendar();</code></pre>
+
+Или инициализируем календарь с параметрами:
+<pre><code>$("#calendar_container").ionCalendar({
+    lang: "ru",                     // язык календаря
+    format: "LL",                   // формат возвращаемой даты
+    onUpdate: function(date){       // callback функция, вызывается при каждой смене месяца
+        console.log(date);
+    },
+    onClick: function(date){        // callback функция, вызывается при каждом клике по дню
+        console.log(date);
+    }
+});
 </code></pre>
