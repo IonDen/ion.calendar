@@ -22,6 +22,7 @@ ion.calendar — красивый, удобный и легко настраив
 * ion.calendar.js
 
 И CSS:
+* normalize.min.css - желательно, если он у вас еще не подключен
 * ion.calendar.css
 
 Инициализируем календарь:
