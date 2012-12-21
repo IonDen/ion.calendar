@@ -31,32 +31,66 @@
         <hr>
 
         <section id="main_content">
-          <h3>Welcome to GitHub Pages.</h3>
+          <h1>Ion.Calendar 1.0</h1>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>Удобный легкий календарь <a href="http://ionden.com/a/plugins/ion.calendar/">Страница проекта</a></p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<hr><h2>Описание</h2>
+
+<p>ion.calendar — красивый, удобный и легко настраиваемый календарь, основанный на мощной библиотеке для работы со временем "Moment.js". Календарь поддерживает разнообразные события и может работать как datepicker. Кроме того внешний вид календаря полностью настраивается через CSS.
+Календарь лишен избыточных элементов управления. Стрелочки влево/вправо переключают месяц. Клик по текущей дате, позволяет выбрать другой год.
+Календарь свободно распространяется на условиях <a href="http://ionden.com/a/licence.html">лицензии MIT</a>.</p>
+
+<h2>Зависимости</h2>
+
+<ul>
+<li><a href="http://jquery.com/" target="_blank">jQuery 1.7.2+</a></li>
+<li><a href="http://momentjs.com/" target="_blank">Moment.js 1.7+</a></li>
+</ul><h2>Подключение</h2>
+
+<p>Подключаем библиотеки:</p>
+
+<ul>
+<li>jQuery</li>
+<li>moment.min.js</li>
+<li>moment.ru.js</li>
+<li>ion.calendar.js</li>
+</ul><p>И CSS:</p>
+
+<ul>
+<li>normalize.min.css - желательно, если он у вас еще не подключен</li>
+<li>ion.calendar.css</li>
+</ul><p>Инициализируем календарь:</p>
+
+<pre><code>$("#calendar_container").ionCalendar();</code></pre>
+
+<p>Или инициализируем календарь с параметрами:</p>
+
+<pre><code>$("#calendar_container").ionCalendar({
+    lang: "ru",                     // язык календаря
+    format: "LL",                   // формат возвращаемой даты
+    onUpdate: function(date){       // callback функция, вызывается при каждой смене месяца
+        console.log(date);
+    },
+    onClick: function(date){        // callback функция, вызывается при каждом клике по дню
+        console.log(date);
+    }
+});
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h2>Настройка</h2>
 
-<h3>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<ul>
+<li>
+<code>lang: "ru"</code> - не обязательнй параметр, по умолчанию <code>ru</code>. Требует подключения дополнительной языковой библиотеки. <code>moment.ru.js</code> включена в дистрибутив. Подробнее о других языках локализации вы можете узнать на <a href="http://momentjs.com/docs/#/i18n/changing-language/">вебсайте библиотеки Moment.js</a>.</li>
+<li>
+<code>format: "LL"</code> - не обязательный параметр, по умолчанию <code>D.M.YYYY</code>. Позволяет задать формат возвращаемой даты, например <code>"DD.MM.YYYY"</code> или <code>"YYYY-MM-DD"</code>. Подробнее о других форматах возвращаемой даты, вы можете узнать на <a href="http://momentjs.com/docs/#/displaying/format/">вебсайте библиотеки Moment.js</a>
+</li>
+<li>
+<code>onUpdate</code> - не обазательный параметр. По умолчанию осутствует. Вызывается каждый раз при смене года или месяца. Возвращает полученную дату.</li>
+<li>
+<code>onClick</code> - не обазательный параметр. По умолчанию осутствует. Переводит календарь в режим datepicker. Все дни месяца становятся кликабельными. При клике на любой из дней, возвращает дату.</li>
+</ul>
         </section>
 
         <footer>
