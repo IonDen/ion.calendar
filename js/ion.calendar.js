@@ -1,5 +1,5 @@
 ﻿// Ion.Calendar
-// version 1.1.59
+// version 1.1.60
 // © 2013 Denis Ineshin | IonDen.com
 //
 // Project page:    http://ionden.com/a/plugins/ion.calendar/
@@ -8,8 +8,6 @@
 // Released under MIT licence:
 // http://ionden.com/a/licence.html
 // =====================================================================================================================
-
-var moment = moment || {};
 
 (function($){
     $.fn.ionCalendar = function(options){
