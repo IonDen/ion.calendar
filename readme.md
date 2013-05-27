@@ -1,19 +1,19 @@
-# Ion.Calendar 1.0
+# Ion.Calendar 1.1
 
 Easy and powerfull calendar. <a href="http://ionden.com/a/plugins/ion.calendar/">Project page</a>
 
-Download: <a href="http://ionden.com/a/plugins/ion.calendar/ion.calendar-1.0.zip">ion.calendar-1.0.zip</a>
+Download: <a href="http://ionden.com/a/plugins/ion.calendar/ion.calendar-1.1.zip">ion.calendar-1.1.zip</a>
 
 ***
 
 ## Description
 ion.calendar — easy and powerfull calendar, based on awesome jQuery plugin to work with date - "Moment.js". Calendar supports events and can work as datepicker. Calendar can be fully modified with CSS.<br />
 There are no unnecessary controls. Arrow left and right switch month. Click on a date allows to change year.<br />
-ion.calendar is freely distributed under <a href="http://ionden.com/a/licence.html">MIT licence</a>.
+ion.calendar is freely distributed under <a href="http://ionden.com/a/licence-en.html">MIT licence</a>.
 
 ## Dependencies
 * <a href="http://jquery.com/" target="_blank">jQuery 1.7.2+</a>
-* <a href="http://momentjs.com/" target="_blank">Moment.js 1.7+</a>
+* <a href="http://momentjs.com/" target="_blank">Moment.js 2.0+</a>
 
 
 ## Using script
@@ -35,6 +35,7 @@ Or initialize calendar with custom settings:
 <pre><code>$("#calendar_container").ionCalendar({
     lang: "ru",                     // calendar language
     format: "LL",                   // date format
+    start: "15.12.1981",            // calendar start date
     onUpdate: function(date){       // callback-function, on month change
         console.log(date);
     },
@@ -67,6 +68,11 @@ Or initialize calendar with custom settings:
             <td>Optional property. Returning date format, example: <code>"DD.MM.YYYY"</code> or <code>"YYYY-MM-DD"</code>. More about syntax you can read at <a href="http://momentjs.com/docs/#/displaying/format/">Moment.js website</a></td>
         </tr>
         <tr>
+            <td>start</td>
+            <td>"none"</td>
+            <td>Optional property. Sets the starting date of calendar.</td>
+        </tr>
+        <tr>
             <td>onUpdate</td>
             <td>-</td>
             <td>Optional property. Callback-function on every month change. Returns date.</td>
@@ -79,6 +85,11 @@ Or initialize calendar with custom settings:
     </tbody>
 </table>
 
+## Update history
+* 27.05.2013 - new feature to set calendar start date
+* 27.05.2013 - new feature to set calendar settings through data-* attributes of base tag
+* 16.05.2013 - year changing mechanism redesigned
+
 <br />
 <br />
 ***
@@ -89,7 +100,7 @@ Or initialize calendar with custom settings:
 
 Удобный легкий календарь <a href="http://ionden.com/a/plugins/ion.calendar/">Страница проекта</a>
 
-Скачать: <a href="http://ionden.com/a/plugins/ion.calendar/ion.calendar-1.0.zip">ion.calendar-1.0.zip</a>
+Скачать: <a href="http://ionden.com/a/plugins/ion.calendar/ion.calendar-1.1.zip">ion.calendar-1.1.zip</a>
 
 ***
 
@@ -100,7 +111,7 @@ ion.calendar — красивый, удобный и легко настраив
 
 ## Зависимости
 * <a href="http://jquery.com/" target="_blank">jQuery 1.7.2+</a>
-* <a href="http://momentjs.com/" target="_blank">Moment.js 1.7+</a>
+* <a href="http://momentjs.com/" target="_blank">Moment.js 2.0+</a>
 
 
 ## Подключение
@@ -122,6 +133,7 @@ ion.calendar — красивый, удобный и легко настраив
 <pre><code>$("#calendar_container").ionCalendar({
     lang: "ru",                     // язык календаря
     format: "LL",                   // формат возвращаемой даты
+    start: "15.12.1981",            // начальная дата календаря
     onUpdate: function(date){       // callback функция, вызывается при каждой смене месяца
         console.log(date);
     },
@@ -154,6 +166,11 @@ ion.calendar — красивый, удобный и легко настраив
             <td>Не обязательный параметр. Позволяет задать формат возвращаемой даты, например <code>"DD.MM.YYYY"</code> или <code>"YYYY-MM-DD"</code>. Подробнее о других форматах возвращаемой даты, вы можете узнать на <a href="http://momentjs.com/docs/#/displaying/format/">вебсайте библиотеки Moment.js</a></td>
         </tr>
         <tr>
+            <td>start</td>
+            <td>"none"</td>
+            <td>Не обязательный параметр, задает начальную дату календаря.</td>
+        </tr>
+        <tr>
             <td>onUpdate</td>
             <td>-</td>
             <td>Не обязательный параметр. Вызывается каждый раз при смене года или месяца. Возвращает полученную дату.</td>
@@ -165,3 +182,8 @@ ion.calendar — красивый, удобный и легко настраив
         </tr>
     </tbody>
 </table>
+
+## История обновлений
+* 27.05.2013 - добавлена возможность задавать стартовую дату
+* 27.05.2013 - параметры календаря можно устанавливать через атрибуты data-*
+* 16.05.2013 - переработан механизм изменения года

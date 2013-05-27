@@ -1,5 +1,5 @@
 ﻿// Ion.Calendar
-// version 1.0.45
+// version 1.1.59
 // © 2013 Denis Ineshin | IonDen.com
 //
 // Project page:    http://ionden.com/a/plugins/ion.calendar/
@@ -9,12 +9,16 @@
 // http://ionden.com/a/licence.html
 // =====================================================================================================================
 
+var moment = moment || {};
+
 (function($){
     $.fn.ionCalendar = function(options){
         var calendar = this;
+
         var settings = $.extend({
-            lang: "ru",
-            format: "D.M.YYYY",
+            lang: calendar.data("lang") || "ru",
+            format: calendar.data("format") || "D.M.YYYY",
+            start: calendar.data("start") || "none",
             onUpdate: null,
             onClick: null
         }, options);
@@ -22,10 +26,9 @@
         moment.lang(settings.lang);
 
         var baseHTML =  '<div class="ion_calendar_head">';
-            baseHTML += '<div class="ion_calendar_top_date">loading</div>';
+            baseHTML += '<div class="ion_calendar_top_date"><input class="ion_set_year" type="text" value="loading..." /></div>';
             baseHTML += '<div class="ion_arr ion_arr_prev">&lt;</div>';
             baseHTML += '<div class="ion_arr ion_arr_next">&gt;</div>';
-            baseHTML += '<input class="ion_set_year" type="text" maxlength="4" value="" />';
             baseHTML += '</div>';
             baseHTML += '<div class="ion_week"></div>';
             baseHTML += '<div class="ion_month"></div>';
@@ -55,7 +58,13 @@
                 this.week_content = calendar.find(".ion_week");
                 this.days_content = calendar.find(".ion_month");
 
-                this.baseDate = moment();
+                this.startDate = moment(settings.start, "D.M.YYYY");
+                if(this.startDate.isValid()) {
+                    this.baseDate = moment(this.startDate);
+                } else {
+                    this.baseDate = moment();
+                }
+
                 this.currentDate = moment(this.baseDate);
 
                 this.update();
@@ -71,47 +80,61 @@
                     self.currentDate.add("months", 1);
                     self.update();
                 });
-                this.field_year.on("mousedown", function(e){
-                    e.preventDefault();
+                this.input_year.on("focusin", function(){
                     self.openYear();
                 });
                 this.input_year.on("focusout", function(){
-                    self.setYear("none");
+                    self.setYear();
                 });
                 this.input_year.on("keydown", function(e){
-                    if(e.keyCode == 13) self.setYear($(this).val());
+                    if(e.which === 13) {
+                        self.setYear();
+                        $(this).blur();
+                    }
                 });
             },
             openYear: function(){
-                this.input_year.val(this.currentDate.format("YYYY"));
-                this.input_year.css("display","block");
-                this.input_year.focus();
+                this.input_year.val("");
             },
-            setYear: function(year){
-                var test = moment(this.currentDate);
-                test.year(year);
+            setYear: function(){
+                var year = this.input_year.val() || "none";
+                year = parseInt(year);
+                if(year && year < 1900) {
+                    year = 1900;
+                } else if(year && year > 2199) {
+                    year = 2199;
+                }
+
+                var test = moment(year);
 
                 if(test.isValid()) {
                     this.currentDate.year(year);
                     this.update();
+                } else {
+                    this.placeYear();
                 }
-                this.input_year.css("display","none");
+            },
+            placeYear: function(){
+                this.input_year.val(this.currentDate.format("MMMM YYYY") + " ▼");
             },
             update: function(){
-                this.field_year.html(this.currentDate.format("MMMM YYYY"));
-                this.input_year.val(this.currentDate.format("YYYY"));
+                this.placeYear();
                 this.week_content.html(weekHTML);
 
                 var workDate = moment(this.currentDate);
 
                 var firstDay = moment(workDate.startOf("month"));
                 var firstDayWeekNum = parseInt(firstDay.format("d"));
-                if(firstDayWeekNum == 0) firstDayWeekNum = 7;
+                if(firstDayWeekNum === 0) {
+                    firstDayWeekNum = 7;
+                }
 
                 var lastDay = moment(workDate.endOf("month"));
                 var lastDayNum = parseInt(lastDay.format("D"));
                 var lastDayWeekNum = parseInt(lastDay.format("d"));
-                if(lastDayWeekNum == 0) lastDayWeekNum = 7;
+                if(lastDayWeekNum === 0) {
+                    lastDayWeekNum = 7;
+                }
 
                 var day, td_num = (firstDayWeekNum - 1) + lastDayNum + (7 - lastDayWeekNum);
 
