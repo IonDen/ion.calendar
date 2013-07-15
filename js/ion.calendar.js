@@ -1,183 +1,465 @@
 ﻿// Ion.Calendar
-// version 1.1.60
+// version 2.0.0, build: 85
 // © 2013 Denis Ineshin | IonDen.com
 //
 // Project page:    http://ionden.com/a/plugins/ion.calendar/
 // GitHub page:     https://github.com/IonDen/ion.calendar
 //
 // Released under MIT licence:
-// http://ionden.com/a/licence.html
+// http://ionden.com/a/plugins/licence-en.html
 // =====================================================================================================================
 
 (function($){
-    $.fn.ionCalendar = function(options){
-        var calendar = this;
+    try {
+        var timeNow = moment();
+    } catch(e){
+        alert("Can't find Moment.js, please read the ion.calendar description.");
+        throw new Error("Can't find Moment.js library");
+    }
 
-        var settings = $.extend({
-            lang: calendar.data("lang") || "ru",
-            format: calendar.data("format") || "D.M.YYYY",
-            start: calendar.data("start") || "none",
-            onUpdate: null,
-            onClick: null
-        }, options);
+    var methods = {
+        init: function(options){
+            var settings = $.extend({
+                    lang: "en",
+                    sundayFirst: true,
+                    years: "80",
+                    format: "",
+                    clickable: true,
+                    startDate: "",
+                    onClick: null
+                }, options),
+                html, i;
 
-        moment.lang(settings.lang);
 
-        var baseHTML =  '<div class="ion_calendar_head">';
-            baseHTML += '<div class="ion_calendar_top_date"><input class="ion_set_year" type="text" value="loading..." /></div>';
-            baseHTML += '<div class="ion_arr ion_arr_prev">&lt;</div>';
-            baseHTML += '<div class="ion_arr ion_arr_next">&gt;</div>';
-            baseHTML += '</div>';
-            baseHTML += '<div class="ion_week"></div>';
-            baseHTML += '<div class="ion_month"></div>';
+            return this.each(function(){
+                var $calendar = $(this);
 
-        var langDate = moment();
-        var weekHTML =  '<table class="ion_table_week"><tr>';
-            weekHTML += '<td>' + langDate.day(1).format("dd") + '</td>';
-            weekHTML += '<td>' + langDate.day(2).format("dd") + '</td>';
-            weekHTML += '<td>' + langDate.day(3).format("dd") + '</td>';
-            weekHTML += '<td>' + langDate.day(4).format("dd") + '</td>';
-            weekHTML += '<td>' + langDate.day(5).format("dd") + '</td>';
-            weekHTML += '<td>' + langDate.day(6).format("dd") + '</td>';
-            weekHTML += '<td>' + langDate.day(0).format("dd") + '</td>';
-            weekHTML += '</tr></table>';
-
-        var func = {
-            init: function(){
-                var self = this;
-
-                calendar.addClass("ion_calendar");
-                calendar.html(baseHTML);
-
-                this.field_year = calendar.find(".ion_calendar_top_date");
-                this.input_year = calendar.find(".ion_set_year");
-                this.btn_prev = calendar.find(".ion_arr_prev");
-                this.btn_next = calendar.find(".ion_arr_next");
-                this.week_content = calendar.find(".ion_week");
-                this.days_content = calendar.find(".ion_month");
-
-                this.startDate = moment(settings.start, "D.M.YYYY");
-                if(this.startDate.isValid()) {
-                    this.baseDate = moment(this.startDate);
-                } else {
-                    this.baseDate = moment();
+                //prevent overwrite
+                if($calendar.data("isActive")) {
+                    return;
                 }
+                $calendar.data("isActive", true);
 
-                this.currentDate = moment(this.baseDate);
 
-                this.update();
 
-                // bind actions
-                this.btn_prev.on("mousedown", function(e){
-                    e.preventDefault();
-                    self.currentDate.subtract("months", 1);
-                    self.update();
-                });
-                this.btn_next.on("mousedown", function(e){
-                    e.preventDefault();
-                    self.currentDate.add("months", 1);
-                    self.update();
-                });
-                this.input_year.on("focusin", function(){
-                    self.openYear();
-                });
-                this.input_year.on("focusout", function(){
-                    self.setYear();
-                });
-                this.input_year.on("keydown", function(e){
-                    if(e.which === 13) {
-                        self.setYear();
-                        $(this).blur();
-                    }
-                });
-            },
-            openYear: function(){
-                this.input_year.val("");
-            },
-            setYear: function(){
-                var year = this.input_year.val() || "none";
-                year = parseInt(year);
-                if(year && year < 1900) {
-                    year = 1900;
-                } else if(year && year > 2199) {
-                    year = 2199;
-                }
+                var $prev,
+                    $next,
+                    $month,
+                    $year,
+                    $day,
 
-                var test = moment(year);
+                    timeSelected,
+                    timeNowLocal = moment(timeNow.lang(settings.lang)),
+                    timeForWork,
+                    weekFirstDay,
+                    weekLastDay,
+                    monthLastDay,
 
-                if(test.isValid()) {
-                    this.currentDate.year(year);
-                    this.update();
-                } else {
-                    this.placeYear();
-                }
-            },
-            placeYear: function(){
-                this.input_year.val(this.currentDate.format("MMMM YYYY") + " ▼");
-            },
-            update: function(){
-                this.placeYear();
-                this.week_content.html(weekHTML);
+                    tempYears,
+                    fromYear,
+                    toYear;
 
-                var workDate = moment(this.currentDate);
 
-                var firstDay = moment(workDate.startOf("month"));
-                var firstDayWeekNum = parseInt(firstDay.format("d"));
-                if(firstDayWeekNum === 0) {
-                    firstDayWeekNum = 7;
-                }
 
-                var lastDay = moment(workDate.endOf("month"));
-                var lastDayNum = parseInt(lastDay.format("D"));
-                var lastDayWeekNum = parseInt(lastDay.format("d"));
-                if(lastDayWeekNum === 0) {
-                    lastDayWeekNum = 7;
-                }
+                // public methods
+                this.updateData = function(options){
+                    settings = $.extend(settings, options);
+                    removeHTML();
+                };
 
-                var day, td_num = (firstDayWeekNum - 1) + lastDayNum + (7 - lastDayWeekNum);
 
-                // forming html table with days
-                var html = '<table class="ion_table_days"><tr>';
-                for(var i = 1; i <= td_num; i++){
-                    day = i + 1 - firstDayWeekNum;
-                    if(day <= 0 || day > lastDayNum) {
-                        html += '<td class="ion_no_day">&nbsp;</td>';
-                    } else {
-                        if(this.currentDate.format("YYYY") == this.baseDate.format("YYYY") && this.currentDate.format("MM") == this.baseDate.format("MM") && day == this.baseDate.format("D")) {
-                            html += '<td class="ion_day ion_current_day">' + day + '</td>';
+
+                // private methods
+                var removeHTML = function(){
+                    $prev.off();
+                    $next.off();
+                    $month.off();
+                    $year.off();
+                    $calendar.empty();
+
+                    prepareData();
+                    prepareCalendar();
+                };
+
+                var prepareData = function(){
+                    // start date
+                    if(settings.startDate) {
+                        if(settings.format.indexOf("L") >= 0) {
+                            timeSelected = moment(settings.startDate, "YYYY.MM.DD").lang(settings.lang);
                         } else {
-                            html += '<td class="ion_day">' + day + '</td>';
+                            timeSelected = moment(settings.startDate, settings.format).lang(settings.lang);
                         }
                     }
-                    if(i / 7 == Math.ceil(i / 7)) html += '</tr><tr>';
+
+
+                    // years diapason
+                    settings.years = settings.years.toString();
+                    tempYears = settings.years.split("-");
+                    if(tempYears.length === 1) {
+                        fromYear = moment().subtract("years", tempYears[0]).format("YYYY");
+                        toYear = moment().format("YYYY");
+                    } else if(tempYears.length === 2){
+                        fromYear = tempYears[0];
+                        toYear = tempYears[1];
+                    }
+                    fromYear = parseInt(fromYear);
+                    toYear = parseInt(toYear);
+
+                    if(toYear < timeNowLocal.format("YYYY")) {
+                        timeNowLocal.year(toYear).month(11);
+                    }
+                    if(fromYear > timeNowLocal.format("YYYY")) {
+                        timeNowLocal.year(fromYear).month(0);
+                    }
+                };
+
+                var prepareCalendar = function(){
+                    timeForWork = moment(timeNowLocal);
+
+                    weekFirstDay = parseInt(timeForWork.startOf("month").format("d"));
+                    weekLastDay = parseInt(timeForWork.endOf("month").format("d"));
+                    monthLastDay = parseInt(timeForWork.endOf("month").format("D"));
+
+                    html  = '<div class="ic__container">';
+                    html += '<div class="ic__header">';
+                    html += '<div class="ic__prev"><div></div></div>';
+                    html += '<div class="ic__next"><div></div></div>';
+
+                    // head month
+                    html += '<div class="ic__month"><select class="ic__month-select">';
+                    for(i = 0; i < 12; i++){
+                        if(i === parseInt(timeNowLocal.format("M")) - 1){
+                            html += '<option value="' + i + '" selected="selected">' + timeForWork.month(i).format("MMMM") + '</option>';
+                        } else {
+                            html += '<option value="' + i + '">' + timeForWork.month(i).format("MMMM") + '</option>';
+                        }
+                    }
+                    html += '</select></div>';
+
+                    // head year
+                    html += '<div class="ic__year"><select class="ic__year-select">';
+                    for(i = fromYear; i <= toYear; i++){
+                        if(i === parseInt(timeNowLocal.format("YYYY"))){
+                            html += '<option value="' + i + '" selected="selected">' + i + '</option>';
+                        } else {
+                            html += '<option value="' + i + '">' + i + '</option>';
+                        }
+                    }
+                    html += '</select></div>';
+
+                    html += '</div>';
+
+                    if(settings.sundayFirst) {
+
+                        // week
+                        html += '<table class="ic__week-head"><tr>';
+                        for(i = 0; i < 7; i++) {
+                            html += '<td>' + timeForWork.day(i).format("dd") + '</td>';
+                        }
+                        html += '</tr></table>';
+
+                        // month
+                        html += '<table class="ic__days"><tr>';
+                        // empty days
+                        for(i = 0; i < weekFirstDay; i++) {
+                            html += '<td class="ic__day-empty">&nbsp;</td>';
+                        }
+                        // days
+                        for(i = 1; i <= monthLastDay; i++) {
+                            // current day
+                            if(moment(timeNowLocal).date(i).format("D.M.YYYY") === timeNow.format("D.M.YYYY")) {
+                                html += '<td class="ic__day ic__day_state_current">' + i + '</td>';
+                            } else if(timeSelected && moment(timeNowLocal).date(i).format("D.M.YYYY") === timeSelected.format("D.M.YYYY")) {
+                                html += '<td class="ic__day ic__day_state_selected">' + i + '</td>';
+                            } else {
+                                html += '<td class="ic__day">' + i + '</td>';
+                            }
+
+                            // new week - new line
+                            if((weekFirstDay + i) / 7 === Math.floor((weekFirstDay + i) / 7)) {
+                                html += '</tr><tr>';
+                            }
+                        }
+                        // empty days
+                        for(i = weekLastDay; i < 6; i++) {
+                            html += '<td class="ic__day-empty">&nbsp;</td>';
+                        }
+                        html += '</tr></table>';
+
+                    } else {
+
+                        // week
+                        html += '<table class="ic__week-head"><tr>';
+                        for(i = 1; i < 8; i++) {
+                            if(i < 7) {
+                                html += '<td>' + timeForWork.day(i).format("dd") + '</td>';
+                            } else {
+                                html += '<td>' + timeForWork.day(0).format("dd") + '</td>';
+                            }
+                        }
+                        html += '</tr></table>';
+
+                        // days
+                        html += '<table class="ic__days"><tr>';
+
+                        // empty days
+                        if(weekFirstDay > 0) {
+                            weekFirstDay = weekFirstDay - 1;
+                        } else {
+                            weekFirstDay = 6;
+                        }
+                        for(i = 0; i < weekFirstDay; i++) {
+                            html += '<td class="ic__day-empty">&nbsp;</td>';
+                        }
+
+                        for(i = 1; i <= monthLastDay; i++) {
+                            // current day
+                            if(moment(timeNowLocal).date(i).format("D.M.YYYY") === timeNow.format("D.M.YYYY")) {
+                                html += '<td class="ic__day ic__day_state_current">' + i + '</td>';
+                            } else if(timeSelected && moment(timeNowLocal).date(i).format("D.M.YYYY") === timeSelected.format("D.M.YYYY")) {
+                                html += '<td class="ic__day ic__day_state_selected">' + i + '</td>';
+                            } else {
+                                html += '<td class="ic__day">' + i + '</td>';
+                            }
+
+                            // new week - new line
+                            if((weekFirstDay + i) / 7 === Math.floor((weekFirstDay + i) / 7)) {
+                                html += '</tr><tr>';
+                            }
+                        }
+                        // empty days
+                        if(weekLastDay < 1) {
+                            weekLastDay = 7;
+                        }
+                        for(i = weekLastDay - 1; i < 6; i++) {
+                            html += '<td class="ic__day-empty">&nbsp;</td>';
+                        }
+                        html += '</tr></table>';
+                    }
+
+                    html += '</div>';
+
+
+                    placeCalendar();
+                };
+
+                var placeCalendar = function(){
+                    $calendar.html(html);
+
+                    $prev = $calendar.find(".ic__prev");
+                    $next = $calendar.find(".ic__next");
+                    $month = $calendar.find(".ic__month-select");
+                    $year = $calendar.find(".ic__year-select");
+                    $day = $calendar.find(".ic__day");
+
+                    $prev.on("click", function(e){
+                        e.preventDefault();
+                        timeNowLocal.subtract("months", 1);
+                        if(parseInt(timeNowLocal.format("YYYY")) < fromYear) {
+                            timeNowLocal.add("months", 1);
+                        }
+                        removeHTML();
+                    });
+                    $next.on("click", function(e){
+                        e.preventDefault();
+                        timeNowLocal.add("months", 1);
+                        if(parseInt(timeNowLocal.format("YYYY")) > toYear) {
+                            timeNowLocal.subtract("months", 1);
+                        }
+                        removeHTML();
+                    });
+                    $month.on("change", function(e){
+                        e.preventDefault();
+                        var toMonth = $(this).prop("value");
+                        timeNowLocal.month(parseInt(toMonth));
+                        removeHTML();
+                    });
+                    $year.on("change", function(e){
+                        e.preventDefault();
+                        var toYear = $(this).prop("value");
+                        timeNowLocal.year(parseInt(toYear));
+                        removeHTML();
+                    });
+
+                    if(settings.clickable) {
+                        $day.on("click", function(e){
+                            e.preventDefault();
+                            var toDay = $(this).text();
+                            timeNowLocal.date(parseInt(toDay));
+                            timeSelected = moment(timeNowLocal);
+                            if(settings.format.indexOf("L") >= 0) {
+                                settings.startDate = timeSelected.format("YYYY-MM-DD");
+                            } else {
+                                settings.startDate = timeSelected.format(settings.format);
+                            }
+
+                            // trigger callback function
+                            if(typeof settings.onClick === "function") {
+                                if(settings.format) {
+                                    if(settings.format === "moment") {
+                                        settings.onClick.call(this, timeSelected);
+                                    } else {
+                                        settings.onClick.call(this, timeSelected.format(settings.format));
+                                    }
+                                } else {
+                                    settings.onClick.call(this, timeSelected.format());
+                                }
+                            }
+
+                            removeHTML();
+                        });
+                    }
+                };
+
+
+
+                // yarrr!
+                prepareData();
+                prepareCalendar();
+            });
+        },
+        update: function(options){
+            return this.each(function(){
+                this.updateData(options);
+            });
+        }
+    };
+
+    $.fn.ionCalendar = function(method){
+        if (methods[method]) {
+            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else if (typeof method === 'object' || !method) {
+            return methods.init.apply(this, arguments);
+        } else {
+            $.error('Method ' + method + ' does not exist for jQuery.ionCalendar');
+        }
+    };
+})(jQuery);
+
+
+
+// =====================================================================================================================
+// Ion.DatePicker
+// support plugin for ion.calendar
+
+(function($){
+    var pluginCount = 0,
+        html,
+        $body = $(document.body);
+
+    var closePopups = function(){
+        $(".ic__datepicker").css("left", "-9999px").css("top", "-9999px");
+    };
+
+    var methods = {
+        init: function(options){
+            var settings = $.extend({
+                lang: "en",
+                sundayFirst: true,
+                years: "80",
+                clickable: true,
+                format: ""
+            }, options);
+
+            return this.each(function(){
+                var $input = $(this),
+                    $popup,
+                    tempData = {},
+                    self = this,
+                    x, y, w,
+                    selectedDate,
+                    currentDate,
+                    testDate;
+
+                //prevent overwrite
+                if($input.data("isActive")) {
+                    return;
                 }
-                html += '</tr></table>';
+                $input.data("isActive", true);
 
-                this.days_content.html(html);
+                pluginCount++;
+                this.pluginCount = pluginCount;
 
-                // trigger callback function
-                if(typeof settings.onUpdate == "function") {
-                    settings.onUpdate.call(this, this.currentDate.format(settings.format));
+                // change settings from data
+                tempData.lang = $input.data("lang") || settings.lang;
+                if($input.data("sundayfirst") === false) {
+                    tempData.sundayFirst = $input.data("sundayfirst");
                 }
+                tempData.years = $input.data("years") || settings.years;
+                tempData.format = $input.data("format") || settings.format;
+                $.extend(settings, tempData);
 
-                // check if onClick callback is here
-                if(typeof settings.onClick == "function") {
-                    this.datePick();
-                }
-            },
-            datePick: function(){
-                var self = this;
-                calendar.addClass("ion_datepicker");
-                this.days_content.find(".ion_day").on("click", function(){
-                    var day = parseInt($(this).text());
-                    var workDate = moment(self.currentDate);
-                    workDate.date(day);
 
-                    settings.onClick.call(self, workDate.format(settings.format));
+                $body.on("mousedown", function(){
+                    closePopups();
                 });
-            }
-        };
 
-        func.init();
+
+                settings.onClick = function(date){
+                    $input.prop("value", date);
+                    selectedDate = date;
+                    closePopups();
+                };
+
+                var preparePopup = function(){
+                    html = '<div class="ic__datepicker" id="ic__datepicker-' + self.pluginCount + '"></div>';
+                    $body.append(html);
+                    $popup = $("#ic__datepicker-" + self.pluginCount);
+                    $popup.ionCalendar(settings);
+
+                    $popup.on("mousedown", function(e){
+                        e.stopPropagation();
+                    });
+                    $input.on("mousedown", function(e){
+                        e.stopPropagation();
+                    });
+                    $input.on("focusin", function(){
+                        closePopups();
+                        openPopup();
+                    });
+                    $input.on("keyup", function(){
+                        openPopup();
+                    });
+                };
+
+                var openPopup = function(){
+                    x = parseInt($input.offset().left);
+                    y = parseInt($input.offset().top);
+                    w = parseInt($input.outerWidth(true));
+
+                    $popup.css("left", (x + w + 10) + "px").css("top", (y - 10) + "px");
+
+
+                    currentDate = $input.prop("value");
+                    if(currentDate && currentDate !== selectedDate && settings.format.indexOf("L") < 0) {
+                        testDate = moment(currentDate, settings.format);
+                        if(testDate.isValid()) {
+                            $popup.ionCalendar("update", {
+                                startDate: currentDate
+                            });
+                        }
+                    }
+
+                };
+
+
+                // yarrr!
+                preparePopup();
+            });
+        },
+        close: function(){
+            closePopups();
+        }
+    };
+
+
+    $.fn.ionDatePicker = function(method){
+        if (methods[method]) {
+            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else if (typeof method === 'object' || !method) {
+            return methods.init.apply(this, arguments);
+        } else {
+            $.error('Method ' + method + ' does not exist for jQuery.ionDatePicker');
+        }
     };
 })(jQuery);

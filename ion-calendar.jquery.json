@@ -1,0 +1,33 @@
+﻿{
+    "name": "ion-calendar",
+    "version": "2.0.0",
+    "title": "Ion Calendar",
+    "description": "jQuery-calendar and datepicker, based on powerful library to work with time - Moment.js",
+    "keywords": [
+        "date",
+        "datepicker",
+        "calendar",
+        "interface",
+        "ui",
+        "momentjs",
+        "multilanguage"
+    ],
+    "author": {
+        "name": "IonDen",
+        "url": "https://github.com/IonDen"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "http://ionden.com/a/plugins/licence-en.html"
+        }
+    ],
+    "homepage": "https://github.com/IonDen/ion.calendar",
+    "docs": "https://github.com/IonDen/ion.calendar/blob/master/readme.md",
+    "demo": "http://ionden.com/a/plugins/ion.calendar/en.html",
+    "download": "http://ionden.com/a/plugins/ion.calendar/ion.calendar-2.0.0.zip",
+    "dependencies": {
+        "jquery": ">=1.9",
+        "momentjs": ">=2.1"
+    }
+}
