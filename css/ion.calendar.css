@@ -1,5 +1,5 @@
 /* Ion.Calendar
-// Version 2.0.0, build: 85
+// Version 2.0.1, build: 91
 // © 2013 Denis Ineshin | IonDen.com
 //
 // Project page:    http://ionden.com/a/plugins/ion.calendar/
@@ -13,8 +13,8 @@
 .ic__container,
 .ic__week-head,
 .ic__week-head td,
-.ic__month,
-.ic__month td,
+.ic__days,
+.ic__days td,
 .ic__header,
 .ic__prev,
 .ic__next,

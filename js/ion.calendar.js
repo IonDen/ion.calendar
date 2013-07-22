@@ -1,5 +1,5 @@
 ﻿// Ion.Calendar
-// version 2.0.0, build: 85
+// version 2.0.1, build: 91
 // © 2013 Denis Ineshin | IonDen.com
 //
 // Project page:    http://ionden.com/a/plugins/ion.calendar/
@@ -26,7 +26,9 @@
                     format: "",
                     clickable: true,
                     startDate: "",
-                    onClick: null
+                    hideArrows: false,
+                    onClick: null,
+                    onReady: null
                 }, options),
                 html, i;
 
@@ -57,7 +59,8 @@
 
                     tempYears,
                     fromYear,
-                    toYear;
+                    toYear,
+                    firstStart = true;
 
 
 
@@ -252,22 +255,28 @@
                     $year = $calendar.find(".ic__year-select");
                     $day = $calendar.find(".ic__day");
 
-                    $prev.on("click", function(e){
-                        e.preventDefault();
-                        timeNowLocal.subtract("months", 1);
-                        if(parseInt(timeNowLocal.format("YYYY")) < fromYear) {
-                            timeNowLocal.add("months", 1);
-                        }
-                        removeHTML();
-                    });
-                    $next.on("click", function(e){
-                        e.preventDefault();
-                        timeNowLocal.add("months", 1);
-                        if(parseInt(timeNowLocal.format("YYYY")) > toYear) {
+                    if(settings.hideArrows) {
+                        $prev[0].style.display = "none";
+                        $next[0].style.display = "none";
+                    } else {
+                        $prev.on("click", function(e){
+                            e.preventDefault();
                             timeNowLocal.subtract("months", 1);
-                        }
-                        removeHTML();
-                    });
+                            if(parseInt(timeNowLocal.format("YYYY")) < fromYear) {
+                                timeNowLocal.add("months", 1);
+                            }
+                            removeHTML();
+                        });
+                        $next.on("click", function(e){
+                            e.preventDefault();
+                            timeNowLocal.add("months", 1);
+                            if(parseInt(timeNowLocal.format("YYYY")) > toYear) {
+                                timeNowLocal.subtract("months", 1);
+                            }
+                            removeHTML();
+                        });
+                    }
+
                     $month.on("change", function(e){
                         e.preventDefault();
                         var toMonth = $(this).prop("value");
@@ -308,6 +317,27 @@
 
                             removeHTML();
                         });
+                    }
+
+                    // trigger onReady function
+                    if(typeof settings.onReady === "function") {
+                        if(settings.format) {
+                            if(settings.format === "moment") {
+                                settings.onReady.call(this, timeNowLocal);
+                            } else {
+                                settings.onReady.call(this, timeNowLocal.format(settings.format));
+                            }
+                        } else {
+                            settings.onReady.call(this, timeNowLocal.format());
+                        }
+                    }
+
+                    // go to startDate
+                    if(settings.startDate && firstStart) {
+                        firstStart = false;
+                        timeNowLocal.year(parseInt(timeSelected.format("YYYY")));
+                        timeNowLocal.month(parseInt(timeSelected.format("M") - 1));
+                        removeHTML();
                     }
                 };
 
