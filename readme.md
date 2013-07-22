@@ -109,6 +109,11 @@ $("#myDatePicker-1").ionDatePicker();
             <td>An optional parameter, if set to <code>false</code> - clicks on the days will do nothing.</td>
         </tr>
         <tr>
+            <td>hideArrows</td>
+            <td>false</td>
+            <td>An optional parameter, hides prev and next arrows.</td>
+        </tr>
+        <tr>
             <td>startDate</td>
             <td>—</td>
             <td>An optional parameter, allows to show selected date in calendar field (datepicker use it).</td>
@@ -117,6 +122,11 @@ $("#myDatePicker-1").ionDatePicker();
             <td>onClick</td>
             <td>—</td>
             <td>Callback function. Returns selected date as string or moment() object.</td>
+        </tr>
+        <tr>
+            <td>onReady</td>
+            <td>—</td>
+            <td>Callback function. Returns current date then calendar is ready.</td>
         </tr>
     </tbody>
 </table>
