@@ -171,11 +171,11 @@
                         for(i = 1; i <= monthLastDay; i++) {
                             // current day
                             if(moment(timeNowLocal).date(i).format("D.M.YYYY") === timeNow.format("D.M.YYYY")) {
-                                html += '<td class="ic__day ic__day_state_current">' + i + '</td>';
+                                html += '<td class="ic__day ic__day_state_current day_'+i+'">' + i + '</td>';
                             } else if(timeSelected && moment(timeNowLocal).date(i).format("D.M.YYYY") === timeSelected.format("D.M.YYYY")) {
-                                html += '<td class="ic__day ic__day_state_selected">' + i + '</td>';
+                                html += '<td class="ic__day ic__day_state_selected day_'+i+'">' + i + '</td>';
                             } else {
-                                html += '<td class="ic__day">' + i + '</td>';
+                                html += '<td class="ic__day day_'+i+'">' + i + '</td>';
                             }
 
                             // new week - new line
@@ -218,11 +218,11 @@
                         for(i = 1; i <= monthLastDay; i++) {
                             // current day
                             if(moment(timeNowLocal).date(i).format("D.M.YYYY") === timeNow.format("D.M.YYYY")) {
-                                html += '<td class="ic__day ic__day_state_current">' + i + '</td>';
+                                html += '<td class="ic__day ic__day_state_current day_'+i+'"">' + i + '</td>';
                             } else if(timeSelected && moment(timeNowLocal).date(i).format("D.M.YYYY") === timeSelected.format("D.M.YYYY")) {
-                                html += '<td class="ic__day ic__day_state_selected">' + i + '</td>';
+                                html += '<td class="ic__day ic__day_state_selected day_'+i+'"">' + i + '</td>';
                             } else {
-                                html += '<td class="ic__day">' + i + '</td>';
+                                html += '<td class="ic__day day_'+i+'"">' + i + '</td>';
                             }
 
                             // new week - new line
@@ -293,7 +293,7 @@
                     if(settings.clickable) {
                         $day.on("click", function(e){
                             e.preventDefault();
-                            var toDay = $(this).text();
+                            var toDay = $(this).text(), remove = true;
                             timeNowLocal.date(parseInt(toDay));
                             timeSelected = moment(timeNowLocal);
                             if(settings.format.indexOf("L") >= 0) {
@@ -306,16 +306,18 @@
                             if(typeof settings.onClick === "function") {
                                 if(settings.format) {
                                     if(settings.format === "moment") {
-                                        settings.onClick.call(this, timeSelected);
+                                        remove = settings.onClick.call(this, timeSelected);
                                     } else {
-                                        settings.onClick.call(this, timeSelected.format(settings.format));
+                                        remove = settings.onClick.call(this, timeSelected.format(settings.format));
                                     }
                                 } else {
-                                    settings.onClick.call(this, timeSelected.format());
+                                    remove = settings.onClick.call(this, timeSelected.format());
                                 }
                             }
 
-                            removeHTML();
+                            if (remove) {
+                                removeHTML();
+                            }
                         });
                     }
 
