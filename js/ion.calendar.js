@@ -428,7 +428,7 @@
 
 
                 settings.onClick = function(date){
-                    $input.prop("value", date);
+                    $input.prop("value", date).trigger('change');
                     selectedDate = date;
                     closePopups();
                 };
