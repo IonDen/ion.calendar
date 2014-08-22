@@ -399,7 +399,8 @@
                     x, y, w,
                     selectedDate,
                     currentDate,
-                    testDate;
+                    testDate,
+                    isReadyToClose = true;
 
                 //prevent overwrite
                 if($input.data("isActive")) {
@@ -421,13 +422,18 @@
 
 
                 $body.on("mousedown", function(){
+                    isReadyToClose = true;
                     closePopups();
+                });
+                $input.on("blur", function(){
+                    checkClosePopups.call(this);
                 });
 
 
                 settings.onClick = function(date){
                     $input.prop("value", date);
                     selectedDate = date;
+                    isReadyToClose = true;
                     closePopups();
                 };
 
@@ -436,14 +442,17 @@
                     $body.append(html);
                     $popup = $("#ic__datepicker-" + self.pluginCount);
                     $popup.ionCalendar(settings);
+                    $input.data("ionCalendar", this);
 
                     $popup.on("mousedown", function(e){
+                        isReadyToClose = false;
                         e.stopPropagation();
                     });
                     $input.on("mousedown", function(e){
                         e.stopPropagation();
                     });
                     $input.on("focusin", function(){
+                        isReadyToClose = true;
                         closePopups();
                         openPopup();
                     });
@@ -472,9 +481,19 @@
 
                 };
 
+                var checkClosePopups = function(){
+                    setTimeout(function(){
+                        if(isReadyToClose) {
+                            closePopups();
+                        } else {
+                            isReadyToClose = true;
+                        }
+                    }, 1);
+                };
+
 
                 // yarrr!
-                preparePopup();
+                preparePopup.call(this);
             });
         },
         close: function(){
