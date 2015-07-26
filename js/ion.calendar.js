@@ -1,5 +1,5 @@
 ﻿// Ion.Calendar
-// version 2.0.1, build: 91
+// version 2.0.2, build: 92
 // © 2013 Denis Ineshin | IonDen.com
 //
 // Project page:    http://ionden.com/a/plugins/ion.calendar/
@@ -51,7 +51,7 @@
                     $day,
 
                     timeSelected,
-                    timeNowLocal = moment(timeNow.lang(settings.lang)),
+                    timeNowLocal = moment(timeNow.locale(settings.lang)),
                     timeForWork,
                     weekFirstDay,
                     weekLastDay,
@@ -88,9 +88,9 @@
                     // start date
                     if(settings.startDate) {
                         if(settings.format.indexOf("L") >= 0) {
-                            timeSelected = moment(settings.startDate, "YYYY.MM.DD").lang(settings.lang);
+                            timeSelected = moment(settings.startDate, "YYYY.MM.DD").locale(settings.lang);
                         } else {
-                            timeSelected = moment(settings.startDate, settings.format).lang(settings.lang);
+                            timeSelected = moment(settings.startDate, settings.format).locale(settings.lang);
                         }
                     }
 

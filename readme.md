@@ -1,10 +1,10 @@
-# Ion.Calendar 2.0.1
+# Ion.Calendar 2.0.2
 
 > English description | <a href="readme.ru.md">Описание на русском</a>
 
 jQuery-calendar and datepicker, based on powerful library to work with time - Moment.js. <a href="http://ionden.com/a/plugins/ion.calendar/en.html">Project page and demos</a>
 
-Download: <a href="http://ionden.com/a/plugins/ion.calendar/ion.calendar-2.0.1.zip">ion.calendar-2.0.1.zip</a>
+Download: <a href="http://ionden.com/a/plugins/ion.calendar/ion.calendar-2.0.2.zip">ion.calendar-2.0.2.zip</a>
 
 ***
 
@@ -27,8 +27,7 @@ Download: <a href="http://ionden.com/a/plugins/ion.calendar/ion.calendar-2.0.1.z
 
 Import this libraries:
 * jQuery
-* moment.min.js
-* moment.ru.js - localisation file for moment.js (<a href="https://github.com/timrwood/moment/tree/develop/min/lang" target="_blank">other languages</a>)
+* moment-with-locales.min.js
 * ion.calendar.min.js
 
 And CSS:
@@ -131,7 +130,8 @@ $("#myDatePicker-1").ionDatePicker();
     </tbody>
 </table>
 
-## Update history
-* July 22, 2013 - Version 2.0.1. New method onReady. New setting hideArrows. Auto switch to start date.
-* July 15, 2013 - Version 2.0.0 release. New API. Many new features.
-* May 5, 2013 - Version 1.1.0 release.
+
+
+## <a href="history.md">Update history</a>
+
+[![](https://pledgie.com/campaigns/25694.png?skin_name=chrome)](https://pledgie.com/campaigns/25694)
