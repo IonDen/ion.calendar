@@ -1,12 +1,16 @@
-# Ion.Calendar 2.0.2
+![ion.calendar](_tmp/logo-ion-calendar.png)
 
 > English description | <a href="readme.ru.md">Описание на русском</a>
 
-jQuery-calendar and datepicker, based on powerful library to work with time - Moment.js. <a href="http://ionden.com/a/plugins/ion.calendar/en.html">Project page and demos</a>
-
-Download: <a href="http://ionden.com/a/plugins/ion.calendar/ion.calendar-2.0.2.zip">ion.calendar-2.0.2.zip</a>
+jQuery-calendar and datepicker, based on powerful library to work with time - Moment.js
 
 ***
+
+* Version: 2.0.2
+* <a href="http://ionden.com/a/plugins/ion.calendar/en.html">Project page and demos</a>
+* <a href="http://ionden.com/a/plugins/ion.calendar/ion.calendar-2.0.2.zip">Download ZIP</a>
+
+[![](https://pledgie.com/campaigns/25694.png?skin_name=chrome)](https://pledgie.com/campaigns/25694)
 
 ## Description
 * Ion.Calendar based on powerful library to work with time - Moment.js.
