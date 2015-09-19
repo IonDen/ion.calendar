@@ -1,4 +1,6 @@
-# Ion.Calendar Update History
+![ion.calendar](_tmp/logo-ion-calendar.png)
+
+# Update History
 
 ### Version 2.0.2. July 26, 2015
 * Moment.js updated to new version
