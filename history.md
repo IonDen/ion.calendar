@@ -20,4 +20,5 @@
 
 
 Support the plugin:
+
 [![](https://pledgie.com/campaigns/25694.png?skin_name=chrome)](https://pledgie.com/campaigns/25694)
