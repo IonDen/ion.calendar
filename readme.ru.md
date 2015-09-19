@@ -136,6 +136,10 @@ $("#myDatePicker-1").ionDatePicker();
 
 
 
-## <a href="history.md">История обновлений</a>
+### <a href="history.md">История обновлений</a>
+
+***
+
+Поддержите плагин:
 
 [![](https://pledgie.com/campaigns/25694.png?skin_name=chrome)](https://pledgie.com/campaigns/25694)
