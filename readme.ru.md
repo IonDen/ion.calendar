@@ -10,8 +10,6 @@ jQuery-календарь и датапикер, основанный на би�
 * <a href="http://ionden.com/a/plugins/ion.calendar/index.html">Страница проекта и демо</a>
 * <a href="http://ionden.com/a/plugins/ion.calendar/ion.calendar-2.0.2.zip">Скачать ZIP-архив</a>
 
-[![](https://pledgie.com/campaigns/25694.png?skin_name=chrome)](https://pledgie.com/campaigns/25694)
-
 ## Описание
 * Ion.Calendar основан на мощной библиотеке для работы со временем - Moment.js.
 * Поддерживает все языки, форматы дат и возможности парсинга, что и Moment.js.
@@ -140,6 +138,10 @@ $("#myDatePicker-1").ionDatePicker();
 
 ***
 
-Поддержите плагин:
+#### Поддержите разработку плагинов серии Ion:
 
-[![](https://pledgie.com/campaigns/25694.png?skin_name=chrome)](https://pledgie.com/campaigns/25694)
+* Пожертвовать через сервис Pledgie: [![](https://pledgie.com/campaigns/25694.png?skin_name=chrome)](https://pledgie.com/campaigns/25694)
+
+* Пожертвовать напрямую через Paypal: https://www.paypal.me/IonDen
+
+* Пожертвовать напрямую через Яндекс.Деньги: http://yasobe.ru/na/razrabotku
