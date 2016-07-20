@@ -99,7 +99,7 @@
                     settings.years = settings.years.toString();
                     tempYears = settings.years.split("-");
                     if(tempYears.length === 1) {
-                        fromYear = moment().subtract("years", tempYears[0]).format("YYYY");
+                        fromYear = moment().subtract(tempYears[0], "years").format("YYYY");
                         toYear = moment().format("YYYY");
                     } else if(tempYears.length === 2){
                         fromYear = tempYears[0];
@@ -261,17 +261,17 @@
                     } else {
                         $prev.on("click", function(e){
                             e.preventDefault();
-                            timeNowLocal.subtract("months", 1);
+                            timeNowLocal.subtract(1, "months");
                             if(parseInt(timeNowLocal.format("YYYY")) < fromYear) {
-                                timeNowLocal.add("months", 1);
+                                timeNowLocal.add(1, "months");
                             }
                             removeHTML();
                         });
                         $next.on("click", function(e){
                             e.preventDefault();
-                            timeNowLocal.add("months", 1);
+                            timeNowLocal.add(1, "months");
                             if(parseInt(timeNowLocal.format("YYYY")) > toYear) {
-                                timeNowLocal.subtract("months", 1);
+                                timeNowLocal.subtract(1, "months");
                             }
                             removeHTML();
                         });
